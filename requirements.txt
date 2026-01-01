@@ -1,5 +1,5 @@
 flask
-numpy<2.0
-tensorflow-cpu==2.12.1
+numpy
 pillow
+tflite-runtime
 gunicorn
