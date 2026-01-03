@@ -1,6 +1,5 @@
-
 from flask import Flask, request, jsonify
-import tflite_runtime.interpreter as tflite
+import tensorflow as tf
 import numpy as np
 from PIL import Image
 import io
@@ -8,8 +7,8 @@ import os
 
 app = Flask(__name__)
 
-quality_model = tflite.Interpreter(model_path="handwriting-quality.tflite")
-feedback_model = tflite.Interpreter(model_path="handwriting-feedback-ai.tflite")
+quality_model = tf.lite.Interpreter(model_path="handwriting-quality.tflite")
+feedback_model = tf.lite.Interpreter(model_path="handwriting-feedback-ai.tflite")
 
 quality_model.allocate_tensors()
 feedback_model.allocate_tensors()
@@ -26,6 +25,9 @@ def home():
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    if "image" not in request.files:
+        return jsonify({"error": "No image uploaded"}), 400
+
     image = Image.open(request.files["image"]).convert("L")
     image = image.resize((224, 224))
     image = np.array(image, dtype=np.float32) / 255.0
