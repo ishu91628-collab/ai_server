@@ -1,14 +1,13 @@
 from flask import Flask, request, jsonify
-import tensorflow as tf
 import numpy as np
 from PIL import Image
-import io
 import os
+from tflite_runtime.interpreter import Interpreter
 
 app = Flask(__name__)
 
-quality_model = tf.lite.Interpreter(model_path="handwriting-quality.tflite")
-feedback_model = tf.lite.Interpreter(model_path="handwriting-feedback-ai.tflite")
+quality_model = Interpreter(model_path="handwriting-quality.tflite")
+feedback_model = Interpreter(model_path="handwriting-feedback-ai.tflite")
 
 quality_model.allocate_tensors()
 feedback_model.allocate_tensors()
