@@ -6,8 +6,14 @@ from tflite_runtime.interpreter import Interpreter
 
 app = Flask(__name__)
 
-quality_model = Interpreter(model_path="handwriting-quality.tflite")
-feedback_model = Interpreter(model_path="handwriting-feedback-ai.tflite")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+quality_model = Interpreter(
+    model_path=os.path.join(BASE_DIR, "handwriting-quality.tflite")
+)
+feedback_model = Interpreter(
+    model_path=os.path.join(BASE_DIR, "handwriting-feedback-ai.tflite")
+)
 
 quality_model.allocate_tensors()
 feedback_model.allocate_tensors()
@@ -46,4 +52,4 @@ def predict():
     })
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+    app.run(host="0.0.0.0", port=10000)
